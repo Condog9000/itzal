@@ -1,0 +1,10 @@
+file_format: "1"
+id: itzal_v1
+name: Itzal v1
+type: shield
+url: https://github.com/condog9000/
+requires:
+  - nice_nano_v2
+features:
+  - keys
+  - encoder
