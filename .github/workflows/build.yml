@@ -48,6 +48,13 @@ jobs:
         run: west zephyr-export
         working-directory: Firmware/ZMK
 
+      - name: Patch ZMK Kconfig issues
+        working-directory: Firmware/ZMK
+        run: |
+          # Fix clueboard_california Kconfig.defconfig - symbol defined without type
+          sed -i 's/^config ZMK_KSCAN_DIRECT_POLLING$/config ZMK_KSCAN_DIRECT_POLLING\n\tbool/' \
+            zmk/app/boards/shields/clueboard_california/Kconfig.defconfig || true
+
       - name: Build firmware
         working-directory: Firmware/ZMK
         env:
