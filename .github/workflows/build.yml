@@ -25,11 +25,11 @@ jobs:
           cache-name: cache-zephyr-modules
         with:
           path: |
-            modules/
-            tools/
-            zephyr/
-            bootloader/
-            zmk/
+            Firmware/ZMK/modules/
+            Firmware/ZMK/tools/
+            Firmware/ZMK/zephyr/
+            Firmware/ZMK/bootloader/
+            Firmware/ZMK/zmk/
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Firmware/ZMK/itzal_v1/west.yml') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -37,15 +37,19 @@ jobs:
             ${{ runner.os }}-
 
       - name: West init
-        run: west init -l Firmware/ZMK/itzal_v1 || true
+        run: west init -l itzal_v1 || true
+        working-directory: Firmware/ZMK
 
       - name: West update
         run: west update
+        working-directory: Firmware/ZMK
 
       - name: West zephyr-export
         run: west zephyr-export
+        working-directory: Firmware/ZMK
 
       - name: Build firmware
+        working-directory: Firmware/ZMK
         run: |
           west build -s zmk/app -b nice_nano_v2 \
             -DSHIELD=itzal_v1 \
@@ -53,7 +57,7 @@ jobs:
             -DZEPHYR_EXTRA_MODULES="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1/modules/battery_gauge"
 
       - name: Rename artifact
-        run: mv build/zephyr/zmk.uf2 itzal_v1-nice_nano_v2.uf2
+        run: mv Firmware/ZMK/build/zephyr/zmk.uf2 itzal_v1-nice_nano_v2.uf2
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
