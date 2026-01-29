@@ -1,0 +1,38 @@
+config BATTERY_GAUGE
+    bool "Battery Gauge LED Display"
+    default n
+    depends on ZMK_RGB_UNDERGLOW
+    help
+      Enable battery gauge display on WS2812 LEDs.
+      Shows battery level using a color gradient from
+      red (low) to green (full).
+
+if BATTERY_GAUGE
+
+config BATTERY_GAUGE_DISPLAY_MS
+    int "Display duration in milliseconds"
+    default 3000
+    help
+      How long to display the battery gauge before
+      automatically turning off the LEDs.
+
+config BATTERY_GAUGE_BRIGHTNESS
+    int "LED brightness (0-255)"
+    default 128
+    range 0 255
+    help
+      Brightness level for the battery gauge LEDs.
+
+config BATTERY_GAUGE_SHOW_ON_BOOT
+    bool "Show battery gauge on boot"
+    default y
+    help
+      Display battery level briefly when the keyboard boots.
+
+config BATTERY_GAUGE_LED_COUNT
+    int "Number of LEDs for battery gauge"
+    default 5
+    help
+      Number of LEDs to use for the battery gauge display.
+
+endif # BATTERY_GAUGE

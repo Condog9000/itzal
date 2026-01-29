@@ -1,0 +1,5 @@
+description: Battery gauge display behavior
+
+compatible: "zmk,behavior-battery-gauge"
+
+include: zero_param.yaml

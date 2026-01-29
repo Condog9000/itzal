@@ -56,7 +56,7 @@
         bluetooth_layer {
             bindings = <
     &none           &ext_power EP_OFF &ext_power EP_ON  &bt BT_CLR
-    &rgb_ug RGB_TOG &none             &none
+    &rgb_ug RGB_TOG &bat_gauge        &none
     &none           &none             &none             &none
     &bt BT_SEL 0    &bt BT_SEL 1      &bt BT_SEL 2      &bootloader
                     &none             &none             &none

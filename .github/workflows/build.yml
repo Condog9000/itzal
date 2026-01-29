@@ -1,0 +1,62 @@
+name: Build ZMK Firmware
+
+on:
+  push:
+    paths:
+      - "Firmware/ZMK/itzal_v1/**"
+  pull_request:
+    paths:
+      - "Firmware/ZMK/itzal_v1/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: zmkfirmware/zmk-build-arm:stable
+    name: Build itzal_v1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache west modules
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-zephyr-modules
+        with:
+          path: |
+            modules/
+            tools/
+            zephyr/
+            bootloader/
+            zmk/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Firmware/ZMK/itzal_v1/west.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: West init
+        run: west init -l Firmware/ZMK/itzal_v1
+
+      - name: West update
+        run: west update
+
+      - name: West zephyr-export
+        run: west zephyr-export
+
+      - name: Build firmware
+        run: |
+          west build -s zmk/app -b nice_nano_v2 \
+            -DSHIELD=itzal_v1 \
+            -DZMK_CONFIG="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1" \
+            -DZEPHYR_EXTRA_MODULES="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1/modules/battery_gauge"
+
+      - name: Rename artifact
+        run: mv build/zephyr/zmk.uf2 itzal_v1-nice_nano_v2.uf2
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: itzal_v1-nice_nano_v2
+          path: itzal_v1-nice_nano_v2.uf2
