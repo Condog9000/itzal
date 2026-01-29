@@ -1,5 +1,10 @@
 #include <dt-bindings/led/led.h>
 
+/* Enable ADC for battery voltage divider */
+&adc {
+    status = "okay";
+};
+
 &pinctrl {
     spi3_default: spi3_default {
         group1 {
