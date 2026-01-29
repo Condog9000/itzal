@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: West init
-        run: west init -l Firmware/ZMK/itzal_v1
+        run: west init -l Firmware/ZMK/itzal_v1 || true
 
       - name: West update
         run: west update
