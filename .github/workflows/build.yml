@@ -51,7 +51,7 @@ jobs:
       - name: Build firmware
         working-directory: Firmware/ZMK
         run: |
-          west build -s zmk/app -b nice_nano_v2 \
+          west build -s zmk/app -b nice_nano_v2 -- \
             -DSHIELD=itzal_v1 \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1" \
             -DZEPHYR_EXTRA_MODULES="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1/modules/battery_gauge"
