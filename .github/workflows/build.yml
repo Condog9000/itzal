@@ -56,7 +56,7 @@ jobs:
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1" \
             -DZEPHYR_EXTRA_MODULES="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1/modules/battery_gauge" \
             -DBOARD_ROOT="${GITHUB_WORKSPACE}/Firmware/ZMK/zmk/app" \
-            -DSHIELD_ROOT="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1"
+            -DSHIELD_ROOT="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1;${GITHUB_WORKSPACE}/Firmware/ZMK/zmk/app"
 
       - name: Rename artifact
         run: mv Firmware/ZMK/build/zephyr/zmk.uf2 itzal_v1-nice_nano_v2.uf2
