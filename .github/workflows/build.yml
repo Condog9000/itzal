@@ -50,8 +50,9 @@ jobs:
 
       - name: Build firmware
         working-directory: Firmware/ZMK
+        env:
+          KCONFIG_WARN_TO_ERROR: "0"
         run: |
-          export KCONFIG_WARN_TO_ERROR=0
           west build -s zmk/app -b nice_nano@2 -- \
             -DSHIELD=itzal_v1 \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1/boards/shields/itzal_v1" \
