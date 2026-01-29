@@ -42,12 +42,13 @@
             , <&pro_micro 5 GPIO_ACTIVE_HIGH>
             ;
     };
+    /* Encoder disabled - uncomment CONFIG_EC11 in conf file to enable
     encoder_0: encoder_0 {
         compatible = "alps,ec11";
         a-gpios = <&pro_micro 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         b-gpios = <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         steps = <80>;
-        status = "disabled";
+        status = "okay";
     };
 
     sensors {
@@ -55,8 +56,5 @@
         sensors = <&encoder_0>;
         triggers-per-rotation = <20>;
     };
+    */
 };
-
-&encoder_0 {
-        status="okay";
-    };
