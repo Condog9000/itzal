@@ -3,10 +3,6 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/ext_power.h>
-#include <dt-bindings/zmk/rgb.h>
-
-
-
 
 // ------------------default-----------------
 // | LAYERSFT |    /    |    *    |    -    |
@@ -15,21 +11,12 @@
 // |    1     |    2    |    3    |  ENTER  |
 // |          |    0    |         |    .    |
 
-
 // ----------------------------functions-------------------------------
-// |  LAYERSFT  |    NOP             |    NOP    |   Bluetooth PREV   |
-// |    NOP     |    LAYERSFT        |    NOP    |   Bluetooth Next   |
-// |    NOP     |    OUT_TOG         |    NOP    |                    |
-// |Bluetooth 0 |    Bluetooth 1     |Bluetooth 2|   reset            |
-// |            |    BluetoothCLR    |           |   NOP              |
-
-
-// --------------------action layer------------------
-// |     NOP   |     NOP   |     NOP   |     NOP    |
-// |     NOP   |     NOP   |     NOP   |            |
-// |Arrow Left |     NOP   |Arrow Right|     NOP    |
-// |     NOP   |     NOP   |     NOP   |     NOP    |
-// |           |     NOP   |           | Bootloader |
+// |  LAYERSFT  |  EXT_OFF  |  EXT_ON   |   BT_CLR             |
+// |    NOP     |    NOP    |    NOP    |                      |
+// |    NOP     |    NOP    |    NOP    |   NOP                |
+// |Bluetooth 0 | Bluetooth 1|Bluetooth 2|   bootloader        |
+// |            |    NOP    |           |   NOP                |
 
 &soft_off {
     hold-time-ms= <5000>; //Only turn off if the key is held for 5 seconds or longer.
@@ -47,17 +34,15 @@
     &kp KP_N1     &kp KP_N2      &kp KP_N3         &sys_reset
                   &kp KP_N0      &kp KP_DOT        &kp KP_ENTER
             >;
-            sensor-bindings = <&inc_dec_kp &none &none>;
         };
         bluetooth_layer {
             bindings = <
     &none           &ext_power EP_OFF &ext_power EP_ON  &bt BT_CLR
-    &rgb_ug RGB_TOG &bat_gauge        &none
+    &none           &none             &none
     &none           &none             &none             &none
     &bt BT_SEL 0    &bt BT_SEL 1      &bt BT_SEL 2      &bootloader
                     &none             &none             &none
             >;
-            sensor-bindings = <&inc_dec_kp &trans &trans>;
         };
     };
 };
