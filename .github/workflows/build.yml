@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "Firmware/ZMK/itzal_v1/**"
+      - ".github/workflows/build.yml"
   pull_request:
     paths:
       - "Firmware/ZMK/itzal_v1/**"
@@ -11,66 +12,6 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container:
-      image: zmkfirmware/zmk-build-arm:stable
-    name: Build itzal_v1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Cache west modules
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-zephyr-modules
-        with:
-          path: |
-            Firmware/ZMK/modules/
-            Firmware/ZMK/tools/
-            Firmware/ZMK/zephyr/
-            Firmware/ZMK/bootloader/
-            Firmware/ZMK/zmk/
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Firmware/ZMK/itzal_v1/west.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: West init
-        run: west init -l itzal_v1 || true
-        working-directory: Firmware/ZMK
-
-      - name: West update
-        run: west update
-        working-directory: Firmware/ZMK
-
-      - name: West zephyr-export
-        run: west zephyr-export
-        working-directory: Firmware/ZMK
-
-      - name: Patch ZMK Kconfig issues
-        working-directory: Firmware/ZMK
-        run: |
-          # Fix clueboard_california Kconfig.defconfig - symbol defined without type
-          sed -i 's/^config ZMK_KSCAN_DIRECT_POLLING$/config ZMK_KSCAN_DIRECT_POLLING\n\tbool/' \
-            zmk/app/boards/shields/clueboard_california/Kconfig.defconfig || true
-
-      - name: Build firmware
-        working-directory: Firmware/ZMK
-        env:
-          KCONFIG_WARN_TO_ERROR: "0"
-        run: |
-          west build -s zmk/app -b nice_nano@2 -- \
-            -DSHIELD=itzal_v1 \
-            -DZMK_CONFIG="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1/boards/shields/itzal_v1" \
-            -DZEPHYR_EXTRA_MODULES="${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1;${GITHUB_WORKSPACE}/Firmware/ZMK/itzal_v1/modules/battery_gauge" \
-            -DBOARD_ROOT="${GITHUB_WORKSPACE}/Firmware/ZMK/zmk/app"
-
-      - name: Rename artifact
-        run: mv Firmware/ZMK/build/zephyr/zmk.uf2 itzal_v1-nice_nano_v2.uf2
-
-      - name: Upload firmware
-        uses: actions/upload-artifact@v4
-        with:
-          name: itzal_v1-nice_nano_v2
-          path: itzal_v1-nice_nano_v2.uf2
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    with:
+      config_path: Firmware/ZMK/itzal_v1
