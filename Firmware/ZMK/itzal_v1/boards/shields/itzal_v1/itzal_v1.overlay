@@ -1,5 +1,4 @@
 #include <dt-bindings/zmk/matrix_transform.h>
-#include <physical_layouts.dtsi>
 
 / {
     chosen {
@@ -13,31 +12,16 @@
         display-name = "Default";
         kscan = <&kscan0>;
         transform = <&default_transform>;
-        keys = <
-            /* Row 0: 4 keys */
-            &key_physical_attrs 100 100 0   0   0 0 0
-            &key_physical_attrs 100 100 100 0   0 0 0
-            &key_physical_attrs 100 100 200 0   0 0 0
-            &key_physical_attrs 100 100 300 0   0 0 0
-            /* Row 1: 3 keys (missing col 3) */
-            &key_physical_attrs 100 100 0   100 0 0 0
-            &key_physical_attrs 100 100 100 100 0 0 0
-            &key_physical_attrs 100 100 200 100 0 0 0
-            /* Row 2: 4 keys */
-            &key_physical_attrs 100 100 0   200 0 0 0
-            &key_physical_attrs 100 100 100 200 0 0 0
-            &key_physical_attrs 100 100 200 200 0 0 0
-            &key_physical_attrs 100 100 300 200 0 0 0
-            /* Row 3: 4 keys */
-            &key_physical_attrs 100 100 0   300 0 0 0
-            &key_physical_attrs 100 100 100 300 0 0 0
-            &key_physical_attrs 100 100 200 300 0 0 0
-            &key_physical_attrs 100 100 300 300 0 0 0
-            /* Row 4: 3 keys (missing col 0) */
-            &key_physical_attrs 100 100 100 400 0 0 0
-            &key_physical_attrs 100 100 200 400 0 0 0
-            &key_physical_attrs 100 100 300 400 0 0 0
-        >;
+
+        position-map {
+            compatible = "zmk,physical-layout-position-map";
+            complete;
+
+            seventeen {
+                physical-layout = <&itzal_physical_layout>;
+                positions = <0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16>;
+            };
+        };
     };
 
     default_transform: keymap_transform_0 {
