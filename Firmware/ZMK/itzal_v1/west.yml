@@ -5,7 +5,7 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: main
+      revision: 8568d02b0bcf2c1876bf29210b294ac53b9521a6
       import: app/west.yml
   self:
     path: itzal_v1
