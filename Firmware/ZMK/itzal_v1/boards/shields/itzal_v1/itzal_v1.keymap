@@ -31,10 +31,6 @@
 // |     NOP   |     NOP   |     NOP   |     NOP    |
 // |           |     NOP   |           | Bootloader |
 
-&led_strip {
-    chain-length = <5>;
-};
-
 &soft_off {
     hold-time-ms= <5000>; //Only turn off if the key is held for 5 seconds or longer.
 };
